@@ -42,6 +42,7 @@ test('delete', async done => {
   expect(row.email).toBe('deleted@example.com');
   const record = db.getModels().User({ email: 'deleted@example.com' });
   const deleted = record.delete();
+  await deleted;
   record.delete().then(async () => {
     expect(await table.get({ id })).toBe(undefined);
     done();

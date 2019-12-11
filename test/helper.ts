@@ -122,12 +122,19 @@ export function createTestConnection(name: string): Connection {
 export function createTestConnectionPool(name: string): ConnectionPool {
   const database = `${DB_NAME}_${name}`;
   return createConnectionPool('mysql', {
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASS,
+//    host: DB_HOST,
+//    user: DB_USER,
+//    password: DB_PASS,
+//    timezone: 'Z',
     database: database,
-    timezone: 'Z',
-    connectionLimit: 10
+    knex: {
+      connection: {
+        host: DB_HOST,
+        user: DB_USER,
+        password: DB_PASS,
+        timezone: 'Z'
+      }
+    }
   });
 }
 
