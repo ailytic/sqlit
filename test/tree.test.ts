@@ -6,8 +6,9 @@ const NAME = 'tree';
 beforeAll(() => helper.createDatabase(NAME, false));
 afterAll(() => helper.dropDatabase(NAME));
 
-test('create', async done => {
-  const table = getDatabase().table('category');
+test('create', async () => {
+  const db = getDatabase();
+  const table = db.table('category');
 
   const root = await table.create({
     name: 'All',
@@ -45,11 +46,12 @@ test('create', async done => {
   rows = await table.getDescendants(apple.id);
   expect(rows.length).toBe(3);
 
-  done();
+  await db.end();
 });
 
-test('update', async done => {
-  const table = getDatabase().table('category');
+test('update', async () => {
+  const db = getDatabase();
+  const table = db.table('category');
 
   const data = [
     '1',
@@ -80,11 +82,12 @@ test('update', async done => {
   rows = await table.getDescendants(node1_1);
   expect(rows.length).toBe(2);
 
-  done();
+  await db.end();
 });
 
-test('delete', async done => {
-  const table = getDatabase().table('category');
+test('delete', async () => {
+  const db = getDatabase();
+  const table = db.table('category');
 
   const data = [
     'd1',
@@ -107,7 +110,7 @@ test('delete', async done => {
   rows = await table.getDescendants(root.id);
   expect(rows.length).toBe(2);
 
-  done();
+  await db.end();
 });
 
 function getDatabase() {

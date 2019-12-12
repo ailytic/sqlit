@@ -1,3 +1,6 @@
+import * as Knex from 'knex';
+import { Pool } from 'tarn';
+
 import {
   Connection,
   TransactionCallback,
@@ -8,29 +11,39 @@ import {
 import mysql = require('mysql');
 
 class _ConnectionPool extends ConnectionPool {
-  private pool: any;
+  private pool: Pool<mysql.Connection>;
+  private knex: Knex;
 
-  constructor(options) {
+  constructor({
+    database,
+    knex: {
+      connection,
+      pool
+    }
+  }) {
     super();
-    this.pool = mysql.createPool(options);
+    this.knex = Knex({
+      client: 'mysql',
+      connection: {
+        ...connection,
+        database
+      },
+      pool
+    });
+    this.pool = this.knex.client.pool;
   }
 
-  getConnection(): Promise<Connection> {
-    return new Promise((resolve, reject) => {
-      return this.pool.getConnection((error, connection) => {
-        if (error) reject(Error(error));
-        resolve(new _Connection(connection, true));
-      });
-    });
+  async getConnection(): Promise<Connection> {
+    const connection = await this.pool.acquire().promise;
+    (connection as any).release = () => this.pool.release(connection);
+    return new _Connection(
+      connection,
+      true
+    );
   }
 
   end(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      return this.pool.end(error => {
-        if (error) reject(error);
-        else resolve();
-      });
-    });
+    return new Promise(resolve => this.knex.destroy(resolve));
   }
 
   escape(value: string): string {

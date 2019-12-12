@@ -11,9 +11,9 @@ import { Schema, Model } from '../src/model';
 import { Database } from '../src/database';
 
 const DB_TYPE = process.env.DB_TYPE || 'mysql';
-const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_HOST = process.env.DB_HOST || '127.0.0.1';
 const DB_USER = process.env.DB_USER || 'root';
-const DB_PASS = process.env.DB_PASS || 'secret';
+const DB_PASS = process.env.DB_PASS || '';
 const DB_NAME = process.env.DB_NAME || 'sqlit_test';
 
 const SCHEMA = fs.readFileSync('test/data/schema.sql').toString();
@@ -43,8 +43,8 @@ function createMySQLDatabase(name: string, data = true): Promise<any> {
         if (error) reject(Error(error));
         resolve();
       });
-    });
-  }, lines);
+    })
+  }, lines).then(() => db.end());
 }
 
 function dropMySQLDatabase(name: string): Promise<void> {
@@ -62,7 +62,7 @@ function dropMySQLDatabase(name: string): Promise<void> {
       if (err) throw err;
       resolve();
     });
-  });
+  }).then(() => db.end());
 }
 
 function createMySQLConnection(name: string): Connection {
@@ -122,12 +122,19 @@ export function createTestConnection(name: string): Connection {
 export function createTestConnectionPool(name: string): ConnectionPool {
   const database = `${DB_NAME}_${name}`;
   return createConnectionPool('mysql', {
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASS,
+//    host: DB_HOST,
+//    user: DB_USER,
+//    password: DB_PASS,
+//    timezone: 'Z',
     database: database,
-    timezone: 'Z',
-    connectionLimit: 10
+    knex: {
+      connection: {
+        host: DB_HOST,
+        user: DB_USER,
+        password: DB_PASS,
+        timezone: 'Z'
+      }
+    }
   });
 }
 

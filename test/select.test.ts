@@ -27,6 +27,8 @@ test('selectTree', async () => {
     expect(result[0].categories[0].name.length).toBeGreaterThan(0);
     expect(result[0].categories[0].products.length).toBeGreaterThan(0);
   }
+
+  await db.end();
 });
 
 test('select foreign key fields', async () => {
@@ -42,6 +44,8 @@ test('select foreign key fields', async () => {
   );
   expect((rows[0] as any).group.name.length).toBeGreaterThan(0);
   expect(connection.queryCounter.total).toBe(1);
+  connection.release();
+  await db.end();
 });
 
 test('select related fields of foreign key fields', async () => {
@@ -68,4 +72,6 @@ test('select related fields of foreign key fields', async () => {
   expect(alice).not.toBe(undefined);
   const bob = row.group.userGroups.find(r => r.user.firstName === 'Bob');
   expect(bob).not.toBe(undefined);
+  connection.release();
+  await db.end();
 });

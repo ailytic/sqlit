@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -e
+set -x
+cd "$(dirname "$0")/.."
+
+main() {
+  install_mysqldump
+  check_requirements
+  copy_env_sh
+  sign_in_nexus
+  install_npm_packages
+  setup_mysql
+}
+
+check_requirements() {
+  [ -n "$CODEBUILD_BUILD_ID" ] || ls ~/.nvm/nvm.sh > /dev/null
+  type yarn > /dev/null
+}
+
+copy_env_sh() {
+  [ ! -e env.sh ] || return 0
+  cp -v env.sh{.example,}
+}
+
+sign_in_nexus() {
+  [ -n "$CODEBUILD_BUILD_ID" ] || return 0
+  [ -n "$VERSION" ] || return 0
+  echo @ailytic:registry=http://nexus.dev.ailytic.com:8081/repository/ailytic-npm-hosted/ >> ~/.npmrc
+  echo "//nexus.dev.ailytic.com:8081/repository/ailytic-npm-hosted/:_authToken=NpmToken.$NEXUS_TOKEN" >> ~/.npmrc
+}
+
+install_npm_packages() {
+  bin/yarn --frozen-lockfile
+}
+
+setup_mysql() {
+  [ -n "$CODEBUILD_BUILD_ID" ] || return 0
+  [ -z "$VERSION" ] || return 0
+  docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=1 mysql:5.6
+  timeout 30 bash -c 'while ! mysqladmin -h127.0.0.1 ping; do sleep 1; done'
+}
+
+install_mysqldump() {
+  [ -n "$CODEBUILD_BUILD_ID" ] || return 0
+  apt-get update
+  apt-get -y install mysql-client
+}
+
+main
