@@ -1,5 +1,5 @@
 {
-  "name": "sqlit",
+  "name": "@ailytic/sqlit",
   "version": "1.9.1",
   "description": "Sqlit - A library that makes database access easy and fun",
   "main": "./dist/index.js",
@@ -12,7 +12,7 @@
     "README.md"
   ],
   "types": "./dist/index.d.ts",
-  "author": "Weidong Fang",
+  "author": "Ailytic",
   "license": "MIT",
   "dependencies": {
     "knex": "^0.20.4",
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/fangwd/sqlit.git"
+    "url": "http://github.com/ailytic/sqlit.git"
   },
   "devDependencies": {
     "@types/jest": "^22.2.0",
