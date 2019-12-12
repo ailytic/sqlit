@@ -1,0 +1,11 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+      nodejs: 10
+    commands:
+    - bin/prepare
+  build:
+    commands:
+    - bin/test
