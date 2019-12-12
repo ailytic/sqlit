@@ -1,6 +1,6 @@
 # sqlit
 
-## [Unreleased]
+## [1.1.0]
 ### Changed
 - Skip mysqladmin on deploy.
 
