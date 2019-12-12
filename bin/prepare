@@ -42,6 +42,7 @@ setup_mysql() {
 
 install_mysqldump() {
   [ -n "$CODEBUILD_BUILD_ID" ] || return 0
+  [ -z "$VERSION" ] || return 0
   apt-get update
   apt-get -y install mysql-client
 }
