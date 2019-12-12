@@ -1,6 +1,6 @@
 {
   "name": "@ailytic/sqlit",
-  "version": "1.9.1",
+  "version": "0.0.0",
   "description": "Sqlit - A library that makes database access easy and fun",
   "main": "./dist/index.js",
   "files": [

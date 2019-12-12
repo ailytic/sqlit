@@ -4,6 +4,7 @@ set -x
 cd "$(dirname "$0")/.."
 
 main() {
+  install_mysqldump
   check_requirements
   copy_env_sh
   sign_in_nexus
@@ -37,6 +38,12 @@ setup_mysql() {
   [ -z "$VERSION" ] || return 0
   docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=1 mysql:5.6
   timeout 30 bash -c 'while ! mysqladmin -h127.0.0.1 ping; do sleep 1; done'
+}
+
+install_mysqldump() {
+  [ -n "$CODEBUILD_BUILD_ID" ] || return 0
+  apt-get update
+  apt-get -y install mysql-client
 }
 
 main
