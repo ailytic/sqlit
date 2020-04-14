@@ -1,5 +1,9 @@
 # sqlit
 
+## [Unreleased]
+### Changed
+- Use an existing database connection.
+
 ## [1.1.0]
 ### Changed
 - Skip mysqladmin on deploy.
