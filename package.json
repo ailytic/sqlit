@@ -14,7 +14,7 @@
   "author": "Ailytic",
   "license": "MIT",
   "dependencies": {
-    "knex": "^0.20.4",
+    "knex": "^0.20.14",
     "reflect-metadata": "^0.1.13",
     "tarn": "^2.0.0"
   },
