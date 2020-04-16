@@ -6,7 +6,6 @@
   "files": [
     "dist",
     "lib",
-    "bin",
     "LICENSE",
     "package.json",
     "README.md"
@@ -15,7 +14,7 @@
   "author": "Ailytic",
   "license": "MIT",
   "dependencies": {
-    "knex": "^0.20.4",
+    "knex": "^0.20.14",
     "reflect-metadata": "^0.1.13",
     "tarn": "^2.0.0"
   },
@@ -26,13 +25,13 @@
   "devDependencies": {
     "@types/jest": "^22.2.0",
     "@types/mysql": "^2.15.4",
-    "@types/node": "^9.4.7",
+    "@types/node": "^12.0.0",
     "@wdfang/getcli": "^1.0.0",
     "jest": "^22.4.1",
-    "mysql": "^2.16.0",
+    "mysql": "^2.18.1",
     "sqlite3": "^4.0.2",
     "ts-jest": "^22.4.1",
-    "typescript": "3.4.5"
+    "typescript": "~3.4.5"
   },
   "scripts": {
     "test": "jest --runInBand",

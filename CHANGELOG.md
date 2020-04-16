@@ -1,5 +1,10 @@
 # sqlit
 
+## [2.0.0]
+### Changed
+- Export the MySQL connection wrapper class.
+- Upgrade to Node 12.
+
 ## [1.1.0]
 ### Changed
 - Skip mysqladmin on deploy.

@@ -2,7 +2,7 @@ import * as Knex from 'knex';
 import { Pool } from 'tarn';
 
 import {
-  Connection,
+  Connection as ConnectionBase,
   TransactionCallback,
   QueryCounter,
   ConnectionPool
@@ -33,10 +33,10 @@ class _ConnectionPool extends ConnectionPool {
     this.pool = this.knex.client.pool;
   }
 
-  async getConnection(): Promise<Connection> {
+  async getConnection(): Promise<ConnectionBase> {
     const connection = await this.pool.acquire().promise;
     (connection as any).release = () => this.pool.release(connection);
-    return new _Connection(
+    return new Connection(
       connection,
       true
     );
@@ -55,7 +55,7 @@ class _ConnectionPool extends ConnectionPool {
   }
 }
 
-class _Connection extends Connection {
+class Connection extends ConnectionBase {
   dialect: string = 'mysql';
   connection: any;
   queryCounter: QueryCounter = new QueryCounter();
@@ -166,7 +166,8 @@ export default {
   createConnectionPool: (options): ConnectionPool => {
     return new _ConnectionPool(options);
   },
-  createConnection: (options): Connection => {
-    return new _Connection(options);
-  }
+  createConnection: (options): ConnectionBase => {
+    return new Connection(options);
+  },
+  Connection
 };
