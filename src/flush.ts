@@ -1,3 +1,4 @@
+import * as chunk from 'lodash.chunk';
 import { Database, Table, Document, Filter, toDocument } from './database';
 import { Record } from './record';
 
@@ -187,7 +188,22 @@ function _persist(connection: Connection, record: Record): Promise<Record> {
   });
 }
 
-function flushTable(
+async function flushTable(
+  connection: Connection,
+  table: Table,
+  perfect?: number
+): Promise<number> {
+  const { recordList } = table;
+  let sum = 0;
+  for (const list of chunk(recordList, 500)) {
+    table.recordList = list;
+    sum += await doFlushTable(connection, table, perfect);
+  }
+  table.recordList = recordList;
+  return sum;
+}
+
+function doFlushTable(
   connection: Connection,
   table: Table,
   perfect?: number
