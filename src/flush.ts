@@ -1,4 +1,4 @@
-import * as chunk from 'lodash.chunk';
+import chunk from 'lodash.chunk';
 import { Database, Table, Document, Filter, toDocument } from './database';
 import { Record } from './record';
 

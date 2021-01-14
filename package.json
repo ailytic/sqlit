@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@types/jest": "^22.2.0",
+    "@types/lodash.chunk": "^4.2.6",
     "@types/mysql": "^2.15.4",
     "@types/node": "^12.0.0",
     "@wdfang/getcli": "^1.0.0",
