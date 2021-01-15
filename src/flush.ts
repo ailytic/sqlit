@@ -188,6 +188,10 @@ function _persist(connection: Connection, record: Record): Promise<Record> {
   });
 }
 
+export const flushConfig = {
+  chunk: 500
+};
+
 async function flushTable(
   connection: Connection,
   table: Table,
@@ -195,7 +199,7 @@ async function flushTable(
 ): Promise<number> {
   const { recordList } = table;
   let sum = 0;
-  for (const list of chunk(recordList, 500)) {
+  for (const list of chunk(recordList, flushConfig.chunk)) {
     table.recordList = list;
     sum += await doFlushTable(connection, table, perfect);
   }

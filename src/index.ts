@@ -15,6 +15,8 @@ export {
   setModelName
 } from './model';
 
+export { flushConfig } from './flush';
+
 export {
   Database,
   Table,
