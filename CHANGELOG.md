@@ -1,5 +1,9 @@
 # sqlit
 
+## [Unreleased]
+### Changed
+- Put data into chunks when flushing them.
+
 ## [2.0.0]
 ### Changed
 - Export the MySQL connection wrapper class.
