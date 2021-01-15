@@ -1,6 +1,6 @@
 # sqlit
 
-## [Unreleased]
+## [2.1.0]
 ### Changed
 - Put data into chunks when flushing them.
 
